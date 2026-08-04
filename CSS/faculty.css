@@ -1,0 +1,60 @@
+body{
+    background:#dbeafe;
+    font-family:'Segoe UI',Arial,sans-serif;
+}
+
+
+.box{
+    width:90%;
+    margin:30px auto;
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    border:2px solid #163172;
+    box-shadow:0 4px 12px rgba(0,0,0,0.2);
+}
+
+
+h1,h2,h3{
+    color:#163172;
+}
+
+
+hr{
+    border:1px solid #163172;
+}
+
+
+table{
+    width:95%;
+    border-collapse:collapse;
+    margin:auto;
+    background:#eef5ff;
+}
+
+
+th{
+    background:#163172;
+    color:white;
+    padding:12px;
+}
+
+
+td{
+    padding:12px;
+    border:1px solid #9aaed6;
+    line-height:1.6;
+}
+
+
+tr:hover{
+    background:#dbeafe;
+}
+
+
+.contact{
+    background:#eef5ff;
+    padding:15px;
+    border-radius:10px;
+    border-left:5px solid #163172;
+}
