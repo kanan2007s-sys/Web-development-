@@ -1,43 +1,90 @@
-
-
-
-         table{
-    background-color:#eef5ff;
-    margin-top:10px;
-    border-collapse:separate;
-    border:2px solid #163172;
-    border-radius:10px;
-    overflow:hidden;
+body{
+    background: linear-gradient(135deg, #eef6ff, #dbeafe);
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #1f2937;
 }
 
-        
-         .special{
-    border:none;
-    margin-left:auto;
-    margin-right:auto;
-    border-top:2px solid #163172;
-    border-bottom:2px solid #163172;
+table{
+    background: #ffffff;
+    margin-top: 20px;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 2px solid #2563eb;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
-        a{
-color:#163172;
-font-weight:bold;
+.special{
+    border: none;
+    margin-left: auto;
+    margin-right: auto;
+    border-top: 2px solid #2563eb;
+    border-bottom: 2px solid #2563eb;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
-    
-        th, td {
-  padding: 10px;
-    }
-
-    .scroll-box{
-        height :200px ;
-        overflow-y: auto;
-    }
-
-    a:hover{
-    color:#ffffff;
-    background:#163172;
-    border-radius:5px;
+th{
+    background: linear-gradient(to right, #2563eb, #1d4ed8);
+    color: white;
+    font-size: 16px;
+    letter-spacing: 0.5px;
 }
 
-    
+td{
+    background: #f8fbff;
+    transition: background 0.3s ease;
+}
+
+tr:nth-child(even) td{
+    background: #eef5ff;
+}
+
+tr:hover td{
+    background: #dbeafe;
+}
+
+th,
+td{
+    padding: 12px 18px;
+}
+
+.scroll-box{
+    height: 200px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #2563eb #dbeafe;
+}
+
+.scroll-box::-webkit-scrollbar{
+    width: 8px;
+}
+
+.scroll-box::-webkit-scrollbar-track{
+    background: #dbeafe;
+    border-radius: 10px;
+}
+
+.scroll-box::-webkit-scrollbar-thumb{
+    background: #2563eb;
+    border-radius: 10px;
+}
+
+a{
+    color: #1d4ed8;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+a:hover{
+    color: #ffffff;
+    background: linear-gradient(to right, #2563eb, #1d4ed8);
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+}
