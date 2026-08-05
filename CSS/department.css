@@ -1,0 +1,54 @@
+body{
+    background:#dbeafe;
+    font-family:'Segoe UI',Arial,sans-serif;
+}
+
+
+.box{
+    width:80%;
+    margin:40px auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    border: 2px solid #163172;
+    box-shadow:0 4px 12px rgba(0,0,0,0.2);
+}
+
+
+h1,h2,h3{
+    color:#163172;
+}
+
+
+hr{
+    border:1px solid #163172;
+}
+
+
+ul{
+    background:#eef5ff;
+    padding:20px 40px;
+    border-radius:10px;
+    border-left:5px solid #163172;
+}
+
+
+li{
+    font-size:17px;
+    margin:8px;
+}
+
+
+.section{
+    background:#eef5ff;
+    padding:15px;
+    margin-top:20px;
+    border-radius:10px;
+    border-left:5px solid #163172;
+}
+
+
+p{
+    line-height:1.7;
+    font-size:17px;
+}

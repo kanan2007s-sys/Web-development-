@@ -1,0 +1,64 @@
+body{
+    background:#dbeafe;
+    font-family:'Segoe UI',Arial,sans-serif;
+}
+
+
+.box{
+    width:60%;
+    margin:30px auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    border:2px solid #163172;
+    box-shadow:0 4px 12px rgba(0,0,0,0.2);
+}
+
+
+h1{
+    text-align:center;
+    color:#163172;
+}
+
+
+hr{
+    border:1px solid #163172;
+}
+
+
+label{
+    color:#163172;
+    font-weight:bold;
+}
+
+
+input,select{
+    width:100%;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #163172;
+    font-size:16px;
+}
+
+
+input[type="radio"],
+input[type="checkbox"]{
+    width:auto;
+}
+
+
+button{
+    padding:10px 25px;
+    border:none;
+    border-radius:20px;
+    background:#163172;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    margin-right:10px;
+}
+
+
+button:hover{
+    background:#274c9c;
+}
