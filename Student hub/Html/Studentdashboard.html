@@ -1,43 +1,75 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Student dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="../CSS/dashboard.css">
 </head>
-    <body>
-        <a href="homepage.html">Home</a> <h2 align="center">Student name : Kanan sharma<h2>
-            <br>
-            <br>
-            <hr>
 
-        <p>
-            <a href="attendence.html">Gross Attendence</a>
-        </p>
-        <h2 align="center">Certificates</h2>
-        <a href="C:\Users\Suresh\Desktop\CErfiticates\25dce110_Certificate.jpg">Worksop(Cognizence)</a>
-        <br>
-        <a href="C:\Users\Suresh\Desktop\CErfiticates\25dce110_coursera.pdf">Coursera(C++ object oriented programming)</a>
-        <br>
-        <a href="C:\Users\Suresh\Desktop\CErfiticates\25dce110_supernove.pdf">Supernova</a>
-        <br>
-        <a href="C:\Users\Suresh\Desktop\CErfiticates\25dce110_thinkx.pdf">Thinkx hackathon</a>
-        <br>
+<body>
+<div class="dashboard">
+    <a href="homepage.html">Home</a>
 
-        <!--<h2 align="center">Academic achievments</h2>-->
-        <h2 align="center">Exam result</h2>
-        <form>
-            <label>
-                <select>                    
-                    <option value="sem1.html">SEM 1</option>                    
-                    <option value="sem2.html">SEM 2</option>                    
-                    <option value="sem3.html">SEM 3</option>                    
-                    <option value="sem4.html">SEM 4</option>
-                </select>
-                
-            </label>
-        </form>
-        <a href=></a>
+    <h2 align="center">Student Name: Kanan Sharma</h2>
 
+    <hr>
 
+    <p>
+        <a href="attendance.html">Gross Attendance</a>
+    </p>
 
-<h4 align="center" style="position : absolute; bottom : 0; left:50% "><a href="FAQ.html">FAQ</a>&nbsp;&nbsp;&nbsp;<a href="Feedback.html">Feedback</a>&nbsp;&nbsp;&nbsp;<a href="about.html">About</a></h4>            
-    </body>
+    <h2 align="center">Certificates</h2>
+
+    <a href="../Certificates/25dce110_Certificate.jpg" target="_blank">
+        Workshop (Cognizance)
+    </a>
+    <br><br>
+
+    <a href="../Certificates/25dce110_coursera.pdf" target="_blank">
+        Coursera (C++ Object-Oriented Programming)
+    </a>
+    <br><br>
+
+    <a href="../Certificates/25dce110_supernova.pdf" target="_blank">
+        Supernova
+    </a>
+    <br><br>
+
+    <a href="../Certificates/25dce110_thinkx.pdf" target="_blank">
+        ThinkX Hackathon
+    </a>
+
+    <h2 align="center">Academic Achievements</h2>
+
+    <!-- Add achievements here -->
+
+    <h2 align="center">Exam Result</h2>
+
+    <form>
+        <label for="semester">Select Semester:</label>
+
+        <select id="semester" onchange="if(this.value) window.location.href=this.value;">
+            <option value="">-- Select Semester --</option>
+            <option value="sem1.html">SEM 1</option>
+            <option value="sem2.html">SEM 2</option>
+            <option value="sem3.html">SEM 3</option>
+            <option value="sem4.html">SEM 4</option>
+        </select>
+    </form>
+
+    <br><br>
+
+    <hr>
+
+    <h4 align="center">
+        <a href="FAQ.html">FAQ</a>
+        &nbsp;&nbsp;&nbsp;
+        <a href="Feedback.html">Feedback</a>
+        &nbsp;&nbsp;&nbsp;
+        <a href="about.html">About</a>
+    </h4>
+    </div>
+
+</body>
 </html>
