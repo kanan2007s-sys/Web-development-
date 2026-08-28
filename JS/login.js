@@ -1,16 +1,13 @@
-document.getElementById("Myform").addEventListener("submit", function(event) {
-    event.preventDefault(); 
+function checkLogin() {
 
-    let login = document.getElementById("login").value.trim();
-    let password = document.getElementById("password").value.trim();
+    let loginID = document.getElementById("loginID").value;
+    let password = document.getElementById("password").value;
 
-    if (login === "" || password === "") {
-        alert("Please fill in the required field");
-        return;
+    if (loginID == "" || password == "") {
+        alert("Please fill all the fields!");
+        return false;
     }
-        localStorage.setItem("savedUsername",login);    
 
-
-    alert("Form submitted successfully...");
-    window.location.href = "homepage.html";
-});
+    alert("Login Successful!");
+    return true;
+}
