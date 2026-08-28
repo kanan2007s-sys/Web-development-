@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             menu.style.display = "none";
         }
+        
 
     });
 
