@@ -1,0 +1,77 @@
+[
+    {
+        "id": 1,
+        "question": "How can I check my attendance?",
+        "answer": "You can check your attendance from the Student Dashboard."
+    },
+    {
+        "id": 2,
+        "question": "How can I check my examination results?",
+        "answer": "Examination results can be checked from the Results section."
+    },
+    {
+        "id": 3,
+        "question": "How can I check my fees?",
+        "answer": "You can check your fees from the Fees section."
+    },
+    {
+        "id": 4,
+        "question": "Where can I find upcoming events?",
+        "answer": "Upcoming events are available on the Events page."
+    },
+    {
+        "id": 5,
+        "question": "How can I contact the college?",
+        "answer": "You can contact the college through the Contact page."
+    },
+    {
+        "id": 6,
+        "question": "How can I update my profile?",
+        "answer": "You can update your profile from the Student Dashboard."
+    },
+    {
+        "id": 7,
+        "question": "Where can I find examination schedules?",
+        "answer": "Examination schedules are available in the examination section."
+    },
+    {
+        "id": 8,
+        "question": "How can I register for an event?",
+        "answer": "Open the Events page and follow the registration instructions."
+    },
+    {
+        "id": 9,
+        "question": "Where can I find certificates?",
+        "answer": "Certificates are available in the Student Dashboard."
+    },
+    {
+        "id": 10,
+        "question": "How can I submit feedback?",
+        "answer": "You can submit feedback using the Feedback page."
+    },
+    {
+        "id": 11,
+        "question": "How can I view announcements?",
+        "answer": "Latest announcements are displayed on the Student Portal."
+    },
+    {
+        "id": 12,
+        "question": "How can I access the student dashboard?",
+        "answer": "Log in to your account and open the Student Dashboard."
+    },
+    {
+        "id": 13,
+        "question": "What should I do if I forget my password?",
+        "answer": "Contact the administrator for assistance with your account."
+    },
+    {
+        "id": 14,
+        "question": "Where can I find workshops?",
+        "answer": "Workshops and other activities are listed on the Events page."
+    },
+    {
+        "id": 15,
+        "question": "How can I check college notices?",
+        "answer": "College notices are displayed in the announcements section."
+    }
+]

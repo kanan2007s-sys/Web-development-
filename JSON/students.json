@@ -1,0 +1,122 @@
+[
+    {
+        "id": 1,
+        "name": "Rahul",
+        "enrollment": "25DCE001",
+        "email": "rahul@charusat.edu.in",
+        "course": "Computer Engineering",
+        "year": 2
+    },
+    {
+        "id": 2,
+        "name": "Amit",
+        "enrollment": "25DCE002",
+        "email": "amit@charusat.edu.in",
+        "course": "Information Technology",
+        "year": 3
+    },
+    {
+        "id": 3,
+        "name": "Priya",
+        "enrollment": "25DCE003",
+        "email": "priya@charusat.edu.in",
+        "course": "Computer Science",
+        "year": 1
+    },
+    {
+        "id": 4,
+        "name": "Kanan",
+        "enrollment": "25DCE004",
+        "email": "kanan@charusat.edu.in",
+        "course": "Computer Engineering",
+        "year": 3
+    },
+    {
+        "id": 5,
+        "name": "Jay",
+        "enrollment": "25DCE005",
+        "email": "jay@charusat.edu.in",
+        "course": "Information Technology",
+        "year": 2
+    },
+    {
+        "id": 6,
+        "name": "Neha",
+        "enrollment": "25DCE006",
+        "email": "neha@charusat.edu.in",
+        "course": "Computer Science",
+        "year": 2
+    },
+    {
+        "id": 7,
+        "name": "Rohan",
+        "enrollment": "25DCE007",
+        "email": "rohan@charusat.edu.in",
+        "course": "Computer Engineering",
+        "year": 1
+    },
+    {
+        "id": 8,
+        "name": "Meera",
+        "enrollment": "25DCE008",
+        "email": "meera@charusat.edu.in",
+        "course": "Information Technology",
+        "year": 1
+    },
+    {
+        "id": 9,
+        "name": "Dev",
+        "enrollment": "25DCE009",
+        "email": "dev@charusat.edu.in",
+        "course": "Computer Science",
+        "year": 3
+    },
+    {
+        "id": 10,
+        "name": "Anjali",
+        "enrollment": "25DCE010",
+        "email": "anjali@charusat.edu.in",
+        "course": "Computer Engineering",
+        "year": 2
+    },
+    {
+        "id": 11,
+        "name": "Harsh",
+        "enrollment": "25DCE011",
+        "email": "harsh@charusat.edu.in",
+        "course": "Information Technology",
+        "year": 3
+    },
+    {
+        "id": 12,
+        "name": "Pooja",
+        "enrollment": "25DCE012",
+        "email": "pooja@charusat.edu.in",
+        "course": "Computer Science",
+        "year": 1
+    },
+    {
+        "id": 13,
+        "name": "Akash",
+        "enrollment": "25DCE013",
+        "email": "akash@charusat.edu.in",
+        "course": "Computer Engineering",
+        "year": 3
+    },
+    {
+        "id": 14,
+        "name": "Simran",
+        "enrollment": "25DCE014",
+        "email": "simran@charusat.edu.in",
+        "course": "Information Technology",
+        "year": 2
+    },
+    {
+        "id": 15,
+        "name": "Vivek",
+        "enrollment": "25DCE015",
+        "email": "vivek@charusat.edu.in",
+        "course": "Computer Science",
+        "year": 3
+    }
+]
