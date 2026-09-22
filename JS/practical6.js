@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", function () {
 
     let page = window.location.pathname;
@@ -6,72 +5,66 @@ document.addEventListener("DOMContentLoaded", function () {
     if (page.includes("Eventspage.html"))
         loadEvents();
 
-    if (page.includes("Studentdashboard.html"))
+    else if (page.includes("Studentdashboard.html"))
         loadStudents();
 
-    if (page.includes("FAQ.html"))
+    else if (page.includes("FAQ.html"))
         loadFAQs();
+
 });
+
+
 async function fetchJSON(url) {
 
-    const key = "cache_" + url;
-
     try {
-        const response = await fetch(url);
+
+        let response = await fetch(url);
 
         if (!response.ok)
-            throw new Error("HTTP error " + response.status);
+            throw new Error("File not found");
 
-        const data = await response.json();
+        let data = await response.json();
 
-        if (!Array.isArray(data))
-            throw new Error("JSON must be an array of records");
+        localStorage.setItem(url, JSON.stringify(data));
 
-        localStorage.setItem(key, JSON.stringify(data));
-        return { data: data, fromCache: false };
+        return data;
 
     } catch (error) {
-        // network / file problem -> try the last saved copy
-        const cached = localStorage.getItem(key);
 
-        if (cached)
-            return { data: JSON.parse(cached), fromCache: true };
+        let savedData = localStorage.getItem(url);
+
+        if (savedData)
+            return JSON.parse(savedData);
 
         throw error;
+
     }
+
 }
+
+
 function createSection(title) {
 
-    const section = document.createElement("div");
+    let section = document.createElement("div");
+
     section.className = "p6-section";
-    section.style.padding = "10px 10px 70px 10px";
 
     section.innerHTML = `
         <h2>${title}</h2>
-        <div class="p6-status"></div>
-        <div class="p6-controls"></div>
-        <div class="p6-list"></div>
-        <div class="p6-pages"></div>
+        <p class="status">Loading...</p>
+        <div class="controls"></div>
+        <div class="list"></div>
+        <div class="pages"></div>
     `;
 
     document.body.appendChild(section);
+
     return section;
+
 }
 
-// Sort helper: text (default), number or date
-function sortItems(data, option) {
 
-    if (option.type === "date")
-        return data.sort((a, b) => new Date(a[option.key]) - new Date(b[option.key]));
-
-    if (option.type === "number")
-        return data.sort((a, b) => a[option.key] - b[option.key]);
-
-    return data.sort((a, b) => String(a[option.key]).localeCompare(String(b[option.key])));
-}
-
-// Pagination buttons
-function renderPager(container, totalPages, current, onChange) {
+function createPages(container, totalPages, currentPage, display) {
 
     container.innerHTML = "";
 
@@ -80,167 +73,222 @@ function renderPager(container, totalPages, current, onChange) {
         let button = document.createElement("button");
 
         button.textContent = i;
-        button.disabled = (i === current);   // current page is highlighted/disabled
+
+        button.disabled = i === currentPage;
+
         button.onclick = function () {
-            onChange(i);
+            display(i);
         };
 
         container.appendChild(button);
+
     }
+
 }
 
 
-/* ---------- 3. GENERIC LIST VIEW (used by events, students, FAQs) ---------- */
-async function setupListView(config) {
+async function setupList(config) {
 
-    const { title, url, searchFields, filterField, sortOptions, renderItem } = config;
-    const perPage = config.perPage || 5;
+    let section = createSection(config.title);
 
-    const section  = createSection(title);
-    const status   = section.querySelector(".p6-status");
-    const controls = section.querySelector(".p6-controls");
-    const list     = section.querySelector(".p6-list");
-    const pages    = section.querySelector(".p6-pages");
-
-    // LOADING state
-    status.textContent = "Loading " + title.toLowerCase() + "...";
+    let status = section.querySelector(".status");
+    let controls = section.querySelector(".controls");
+    let list = section.querySelector(".list");
+    let pages = section.querySelector(".pages");
 
     let items;
 
     try {
-        const result = await fetchJSON(url);
-        items = result.data;
-        status.textContent = result.fromCache ? "Offline: showing last saved data." : "";
+
+        items = await fetchJSON(config.url);
+
+        status.textContent = "Data loaded successfully";
+
     } catch (error) {
-        // ERROR state
-        status.textContent = "Could not load " + title.toLowerCase() + ". Check the JSON file path / run with a local server.";
-        console.error("Error loading " + title + ":", error);
+
+        status.textContent = "Error loading JSON file";
+
         return;
+
     }
 
-    let html = `<input class="p6-search" placeholder="Search ${title.toLowerCase()}">`;
 
-    if (filterField) {
-        const values = [...new Set(items.map(i => i[filterField]))].sort();
+    let search = document.createElement("input");
 
-        html += `
-            <select class="p6-filter">
-                <option value="all">All</option>
-                ${values.map(v => `<option value="${v}">${v}</option>`).join("")}
-            </select>`;
+    search.placeholder = "Search here";
+
+
+    let filter = document.createElement("select");
+
+    filter.innerHTML = `<option value="all">All</option>`;
+
+
+    if (config.filterField) {
+
+        let values = [...new Set(
+            items.map(item => item[config.filterField])
+        )];
+
+        values.forEach(value => {
+
+            filter.innerHTML += `
+                <option value="${value}">${value}</option>
+            `;
+
+        });
+
     }
 
-    if (sortOptions) {
-        html += `
-            <select class="p6-sort">
-                <option value="">Sort</option>
-                ${sortOptions.map((o, i) => `<option value="${i}">${o.label}</option>`).join("")}
-            </select>`;
-    }
 
-    controls.innerHTML = html;
+    let sort = document.createElement("select");
 
-    const search = controls.querySelector(".p6-search");
-    const filter = controls.querySelector(".p6-filter");
-    const sort   = controls.querySelector(".p6-sort");
+    sort.innerHTML = `
+        <option value="">Sort By</option>
+        <option value="name">Name A-Z</option>
+        <option value="date">Date</option>
+    `;
 
-    let pageNo = 1;
 
-    function display() {
+    controls.append(search, filter, sort);
 
-        // SEARCH
-        let term = search.value.toLowerCase();
-        let data = items.filter(item =>
-            searchFields.some(f => String(item[f]).toLowerCase().includes(term))
-        );
 
-        // FILTER
-        if (filter && filter.value !== "all")
-            data = data.filter(item => String(item[filterField]) === filter.value);
+    let currentPage = 1;
+    let perPage = 5;
 
-        // SORT
-        if (sort && sort.value !== "")
-            data = sortItems(data, sortOptions[sort.value]);
 
-        // PAGINATION
+    function display(page = 1) {
+
+        currentPage = page;
+
+        let keyword = search.value.toLowerCase();
+
+        let data = items.filter(item => {
+
+            return config.searchFields.some(field =>
+                String(item[field]).toLowerCase().includes(keyword)
+            );
+
+        });
+
+
+        if (config.filterField && filter.value !== "all") {
+
+            data = data.filter(item =>
+                item[config.filterField] === filter.value
+            );
+
+        }
+
+
+        if (sort.value === "name") {
+
+            data.sort((a, b) =>
+                String(a.name || a.title)
+                .localeCompare(String(b.name || b.title))
+            );
+
+        }
+
+
+        if (sort.value === "date") {
+
+            data.sort((a, b) =>
+                new Date(a.date) - new Date(b.date)
+            );
+
+        }
+
+
         let totalPages = Math.ceil(data.length / perPage);
-        if (pageNo > totalPages) pageNo = 1;
 
-        let start  = (pageNo - 1) * perPage;
+        let start = (currentPage - 1) * perPage;
+
         let result = data.slice(start, start + perPage);
 
-        // RENDER
-        list.innerHTML = result.length
-            ? result.map(renderItem).join("")
-            : "<p>No results found.</p>";
 
-        renderPager(pages, totalPages, pageNo, function (p) {
-            pageNo = p;
-            display();
-        });
+        list.innerHTML = result.length
+            ? result.map(config.renderItem).join("")
+            : "<p>No results found</p>";
+
+
+        createPages(
+            pages,
+            totalPages,
+            currentPage,
+            display
+        );
+
     }
 
-    // any change in search / filter / sort goes back to page 1
-    [search, filter, sort].forEach(control => {
-        if (control) {
-            control.addEventListener("input", function () {
-                pageNo = 1;
-                display();
-            });
-        }
-    });
+
+    search.addEventListener("input", () => display(1));
+
+    filter.addEventListener("change", () => display(1));
+
+    sort.addEventListener("change", () => display(1));
+
 
     display();
+
 }
-/*4. PAGE-SPECIFIC LOADERS (only configuration)*/
+
 
 function loadEvents() {
 
-    setupListView({
+    setupList({
+
         title: "Events",
+
         url: "../JSON/events.json",
+
         searchFields: ["title", "category", "location"],
+
         filterField: "category",
-        sortOptions: [
-            { label: "Name A-Z", key: "title" },
-            { label: "Date", key: "date", type: "date" }
-        ],
+
         renderItem: e =>
             `<p>${e.id}. ${e.title} | ${e.category} | ${e.date} | ${e.location}</p>`
+
     });
+
 }
 
 
 function loadStudents() {
 
-    setupListView({
+    setupList({
+
         title: "Students",
+
         url: "../JSON/students.json",
+
         searchFields: ["name", "enrollment", "course"],
+
         filterField: "course",
-        sortOptions: [
-            { label: "Name A-Z", key: "name" },
-            { label: "Year", key: "year", type: "number" }
-        ],
+
         renderItem: s =>
             `<p>${s.name} | ${s.enrollment} | ${s.course} | Year ${s.year}</p>`
+
     });
+
 }
 
 
 function loadFAQs() {
 
-    setupListView({
+    setupList({
+
         title: "FAQs",
+
         url: "../JSON/faqs.json",
+
         searchFields: ["question", "answer"],
-        sortOptions: [
-            { label: "Question A-Z", key: "question" }
-        ],
+
         renderItem: f =>
             `<details>
                 <summary>${f.question}</summary>
                 <p>${f.answer}</p>
             </details>`
+
     });
+
 }
