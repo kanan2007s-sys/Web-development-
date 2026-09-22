@@ -1,0 +1,52 @@
+[
+    {
+        "id": 1,
+        "loginId": "rahul123",
+        "password": "Rahul@123",
+        "name": "Rahul",
+        "enrollment": "25DCE001",
+        "email": "rahul@charusat.edu.in",
+        "course": "Computer Engineering",
+        "year": 2
+    },
+    {
+        "id": 2,
+        "loginId": "amit456",
+        "password": "Amit@123",
+        "name": "Amit",
+        "enrollment": "25DCE002",
+        "email": "amit@charusat.edu.in",
+        "course": "Information Technology",
+        "year": 3
+    },
+    {
+        "id": 3,
+        "loginId": "priya789",
+        "password": "Priya@123",
+        "name": "Priya",
+        "enrollment": "25DCE003",
+        "email": "priya@charusat.edu.in",
+        "course": "Computer Science",
+        "year": 1
+    },
+    {
+        "id": 4,
+        "loginId": "kanan101",
+        "password": "Kanan@123",
+        "name": "Kanan",
+        "enrollment": "25DCE004",
+        "email": "kanan@charusat.edu.in",
+        "course": "Computer Engineering",
+        "year": 3
+    },
+    {
+        "id": 5,
+        "loginId": "jay202",
+        "password": "Jay@123",
+        "name": "Jay",
+        "enrollment": "25DCE005",
+        "email": "jay@charusat.edu.in",
+        "course": "Information Technology",
+        "year": 2
+    }
+]
