@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     let form = document.getElementById("registrationForm");
+
     let name = document.getElementById("name");
     let enrollment = document.getElementById("enrollment");
     let email = document.getElementById("email");
@@ -11,23 +12,14 @@ document.addEventListener("DOMContentLoaded", function () {
     let year = document.getElementById("year");
     let terms = document.getElementById("terms");
     let strength = document.getElementById("strength");
+    let status = document.getElementById("registrationStatus");
+    let submitButton = form.querySelector('button[type="submit"]');
 
     let nameRegex = /^[A-Za-z ]{3,}$/;
-    let enrollmentRegex = /^D?\d{2}DCE\d{3}$/;
+    let enrollmentRegex = /^D?\d{2}DCE\d{3}$/i;
     let emailRegex = /^[a-zA-Z0-9]+@charusat\.edu\.in$/i;
     let mobileRegex = /^[6-9]\d{9}$/;
     let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&]).{8,}$/;
-
-    let users = [];
-
-    fetch("../JSON/registration.json")
-        .then(response => response.json())
-        .then(data => {
-            users = data;
-        })
-        .catch(error => {
-            console.log("Error loading registration.json:", error);
-        });
 
     form.addEventListener("submit", function (event) {
 
@@ -38,31 +30,34 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll("span").forEach(function (span) {
             span.innerText = "";
         });
+        status.innerText = "";
 
         if (name.value.trim() == "") {
             document.getElementById("nameError").innerText = "Name is required";
             valid = false;
         } else if (!nameRegex.test(name.value.trim())) {
             document.getElementById("nameError").innerText =
-                "Name must contain only letters and spaces, minimum 3 characters";
+                "Name must contain only letters and spaces";
             valid = false;
         }
 
         if (enrollment.value.trim() == "") {
-            document.getElementById("idError").innerText = "Enrollment ID is required";
+            document.getElementById("idError").innerText =
+                "Enrollment ID is required";
             valid = false;
         } else if (!enrollmentRegex.test(enrollment.value.trim())) {
             document.getElementById("idError").innerText =
-                "Enrollment ID must be in the format 25DCE001 or D26DCE126";
+                "Invalid enrollment ID";
             valid = false;
         }
 
         if (email.value.trim() == "") {
-            document.getElementById("emailError").innerText = "Email is required";
+            document.getElementById("emailError").innerText =
+                "Email is required";
             valid = false;
         } else if (!emailRegex.test(email.value.trim())) {
             document.getElementById("emailError").innerText =
-                "Enter a valid university email (e.g. name@charusat.edu.in)";
+                "Enter a valid CHARUSAT email";
             valid = false;
         }
 
@@ -72,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
             valid = false;
         } else if (!mobileRegex.test(mobile.value.trim())) {
             document.getElementById("mobileError").innerText =
-                "Mobile number must be exactly 10 digits and start with 6-9";
+                "Enter a valid 10 digit mobile number";
             valid = false;
         }
 
@@ -82,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
             valid = false;
         } else if (!passwordRegex.test(password.value)) {
             document.getElementById("passwordError").innerText =
-                "Password must be at least 8 characters and include uppercase, lowercase, number and special character";
+                "Password must contain uppercase, lowercase, number and special character";
             valid = false;
         }
 
@@ -123,8 +118,42 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (valid) {
-            alert("Registration Successful!");
-            window.location.href = "../HTML/homepage.html";
+            submitButton.disabled = true;
+
+            fetch("../api/register.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: name.value.trim(),
+                    enrollment: enrollment.value.trim().toUpperCase(),
+                    email: email.value.trim().toLowerCase(),
+                    mobile: mobile.value.trim(),
+                    password: password.value,
+                    course: course.value,
+                    year: year.value,
+                    gender: gender.value,
+                    termsAccepted: terms.checked
+                })
+            })
+                .then(async function (response) {
+                    let result = await response.json();
+                    if (!response.ok) {
+                        throw new Error(result.error || "Registration could not be completed.");
+                    }
+                    return result;
+                })
+                .then(function (result) {
+                    alert("Registration successful! Your Login ID is " + result.loginId + ".");
+                    window.location.href = "homepage.html";
+                })
+                .catch(function (error) {
+                    status.innerText = error.message;
+                })
+                .finally(function () {
+                    submitButton.disabled = false;
+                });
         }
     });
 
@@ -158,6 +187,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             strength.innerText = "";
+            status.innerText = "";
 
         }, 0);
     });
