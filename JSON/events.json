@@ -1,0 +1,107 @@
+[
+    {
+        "id": 1,
+        "title": "Cognizance Workshop",
+        "category": "Workshop",
+        "date": "2026-09-20",
+        "location": "CHARUSAT"
+    },
+    {
+        "id": 2,
+        "title": "Supernova Event",
+        "category": "Event",
+        "date": "2026-09-22",
+        "location": "CHARUSAT"
+    },
+    {
+        "id": 3,
+        "title": "ThinkX Hackathon",
+        "category": "Competition",
+        "date": "2026-09-25",
+        "location": "CHARUSAT"
+    },
+    {
+        "id": 4,
+        "title": "Coding Competition",
+        "category": "Competition",
+        "date": "2026-09-28",
+        "location": "CHARUSAT"
+    },
+    {
+        "id": 5,
+        "title": "Web Development Workshop",
+        "category": "Workshop",
+        "date": "2026-10-02",
+        "location": "CHARUSAT"
+    },
+    {
+        "id": 6,
+        "title": "Sports Day",
+        "category": "Sports",
+        "date": "2026-10-05",
+        "location": "CHARUSAT Ground"
+    },
+    {
+        "id": 7,
+        "title": "Tech Fest",
+        "category": "Festival",
+        "date": "2026-10-08",
+        "location": "CHARUSAT"
+    },
+    {
+        "id": 8,
+        "title": "AI Workshop",
+        "category": "Workshop",
+        "date": "2026-10-12",
+        "location": "CHARUSAT"
+    },
+    {
+        "id": 9,
+        "title": "Cultural Fest",
+        "category": "Cultural",
+        "date": "2026-10-15",
+        "location": "CHARUSAT"
+    },
+    {
+        "id": 10,
+        "title": "Java Programming Workshop",
+        "category": "Workshop",
+        "date": "2026-10-18",
+        "location": "CHARUSAT"
+    },
+    {
+        "id": 11,
+        "title": "Quiz Competition",
+        "category": "Competition",
+        "date": "2026-10-20",
+        "location": "CHARUSAT"
+    },
+    {
+        "id": 12,
+        "title": "Cyber Security Seminar",
+        "category": "Seminar",
+        "date": "2026-10-23",
+        "location": "CHARUSAT"
+    },
+    {
+        "id": 13,
+        "title": "Entrepreneurship Talk",
+        "category": "Seminar",
+        "date": "2026-10-26",
+        "location": "CHARUSAT"
+    },
+    {
+        "id": 14,
+        "title": "DSA Coding Contest",
+        "category": "Competition",
+        "date": "2026-10-29",
+        "location": "CHARUSAT"
+    },
+    {
+        "id": 15,
+        "title": "Annual Function",
+        "category": "Cultural",
+        "date": "2026-11-02",
+        "location": "CHARUSAT"
+    }
+]
