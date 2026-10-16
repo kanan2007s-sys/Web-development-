@@ -48,5 +48,18 @@
         "email": "jay@charusat.edu.in",
         "course": "Information Technology",
         "year": 2
+    },
+    {
+        "id": 6,
+        "loginId": "25DCE420",
+        "password": "Chaman@2007",
+        "name": "Chaman",
+        "enrollment": "25DCE420",
+        "email": "chaman@charusat.edu.in",
+        "mobile": "9876543222",
+        "course": "IT",
+        "year": 3,
+        "gender": "Male",
+        "termsAccepted": true
     }
 ]
