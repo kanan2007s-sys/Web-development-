@@ -54,18 +54,32 @@ try {
     $stmt->close();
 
     if (!$user) {
+        $conn->close();
+
         loginResponse(401, [
             "error" => "Account not found in the MySQL users table."
         ]);
     }
 
-    if (!password_verify($password, $user["password"])) {
+    $storedPassword = $user["password"];
+
+    // Verify the entered password against the stored hash.
+    $passwordMatches = password_verify(
+        $password,
+        $storedPassword
+    );
+
+    if (!$passwordMatches) {
+        $conn->close();
+
         loginResponse(401, [
             "error" => "Password does not match the registered account."
         ]);
     }
 
     if (!in_array($user["role"], ["student", "admin"], true)) {
+        $conn->close();
+
         loginResponse(403, [
             "error" => "Invalid account role."
         ]);
@@ -78,7 +92,8 @@ try {
     $_SESSION["name"] = $user["name"];
     $_SESSION["role"] = $user["role"];
     $_SESSION["last_activity"] = time();
-        $dashboard = $user["role"] === "admin"
+
+    $dashboard = $user["role"] === "admin"
         ? "/Webdev/HTML/admin-dashboard.php"
         : "/Webdev/api/Studentdashboard.php";
 
@@ -92,6 +107,14 @@ try {
 
 } catch (mysqli_sql_exception $e) {
     error_log("Login database error: " . $e->getMessage());
+
+    if (isset($stmt) && $stmt instanceof mysqli_stmt) {
+        $stmt->close();
+    }
+
+    if (isset($conn) && $conn instanceof mysqli) {
+        $conn->close();
+    }
 
     loginResponse(500, [
         "error" => "Database error. Check your database connection and users table."

@@ -125,8 +125,7 @@ try {
     $check->close();
 
     // Hash the password before storing it.
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
+$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     if ($hashedPassword === false) {
         throw new RuntimeException("Password hashing failed.");
     }
