@@ -1,3 +1,4 @@
+
 <?php
 
 header("Content-Type: application/json; charset=utf-8");
@@ -30,7 +31,9 @@ foreach ($requiredFields as $field) {
         !is_string($data[$field]) ||
         trim($data[$field]) === ""
     ) {
-        sendJson(400, array("error" => "Please complete all registration fields."));
+        sendJson(400, array(
+            "error" => "Please complete all registration fields."
+        ));
     }
 }
 
@@ -47,16 +50,18 @@ if (!preg_match("/^[A-Za-z ]{3,}$/", $name)) {
     sendJson(400, array("error" => "Enter a valid name."));
 }
 
-if (!preg_match("/^D?\\d{2}DCE\\d{3}$/i", $enrollment)) {
+if (!preg_match("/^D?\d{2}DCE\d{3}$/i", $enrollment)) {
     sendJson(400, array("error" => "Invalid enrollment ID."));
 }
 
-if (!preg_match("/^[a-zA-Z0-9]+@charusat\\.edu\\.in$/i", $email)) {
+if (!preg_match("/^[a-zA-Z0-9]+@charusat\.edu\.in$/i", $email)) {
     sendJson(400, array("error" => "Enter a valid CHARUSAT email."));
 }
 
-if (!preg_match("/^[6-9]\\d{9}$/", $mobile)) {
-    sendJson(400, array("error" => "Enter a valid 10 digit mobile number."));
+if (!preg_match("/^[6-9]\d{9}$/", $mobile)) {
+    sendJson(400, array(
+        "error" => "Enter a valid 10 digit mobile number."
+    ));
 }
 
 if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&]).{8,}$/", $password)) {
@@ -77,13 +82,21 @@ if (!in_array($gender, array("Male", "Female", "Other"), true)) {
     sendJson(400, array("error" => "Select a valid gender."));
 }
 
-if (!isset($data["termsAccepted"]) || $data["termsAccepted"] !== true) {
-    sendJson(400, array("error" => "Accept the terms and conditions."));
+if (
+    !isset($data["termsAccepted"]) ||
+    $data["termsAccepted"] !== true
+) {
+    sendJson(400, array(
+        "error" => "Accept the terms and conditions."
+    ));
 }
 
 require_once __DIR__ . "/db_mysqli.php";
 
+$stmt = null;
+
 try {
+    // Check for duplicate enrollment ID or email.
     $check = $conn->prepare(
         "SELECT enrollment, email FROM users
          WHERE enrollment = ? OR email = ?"
@@ -96,23 +109,33 @@ try {
     while ($row = $result->fetch_assoc()) {
         if (strtoupper($row["enrollment"]) === $enrollment) {
             $check->close();
-            sendJson(409, array("error" => "Enrollment ID is already registered."));
+            sendJson(409, array(
+                "error" => "Enrollment ID is already registered."
+            ));
         }
 
         if (strtolower($row["email"]) === $email) {
             $check->close();
-            sendJson(409, array("error" => "Email is already registered."));
+            sendJson(409, array(
+                "error" => "Email is already registered."
+            ));
         }
     }
 
     $check->close();
 
+    // Hash the password before storing it.
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
+    if ($hashedPassword === false) {
+        throw new RuntimeException("Password hashing failed.");
+    }
+
+    // Insert the registration into MySQL.
     $stmt = $conn->prepare(
         "INSERT INTO users
-         (name, enrollment, email, mobile, password, course, year, gender, termsAccepted)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        (name, enrollment, email, mobile, password, course, year, gender, termsAccepted)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
     );
 
     $yearNumber = (int) $year;
@@ -132,6 +155,104 @@ try {
     );
 
     $stmt->execute();
+
+    // Practical 7: Also save registration details to JSON.
+    // Do not store the password or password hash in this file.
+    $jsonFile = __DIR__ . "/../JSON/registration.json";
+    $directory = dirname($jsonFile);
+
+    if (!is_dir($directory) || !is_writable($directory)) {
+        throw new RuntimeException(
+            "JSON directory does not exist or is not writable."
+        );
+    }
+
+    $file = fopen($jsonFile, "c+");
+
+    if ($file === false) {
+        throw new RuntimeException("Could not open JSON file.");
+    }
+
+    $locked = false;
+
+    try {
+        if (!flock($file, LOCK_EX)) {
+            throw new RuntimeException("Could not lock JSON file.");
+        }
+
+        $locked = true;
+
+        rewind($file);
+        $contents = stream_get_contents($file);
+
+        if ($contents === false) {
+            throw new RuntimeException("Could not read JSON file.");
+        }
+
+        if (trim($contents) === "") {
+            $records = array();
+        } else {
+            $records = json_decode($contents, true);
+
+            if (!is_array($records) || json_last_error() !== JSON_ERROR_NONE) {
+                throw new RuntimeException("Invalid JSON file format.");
+            }
+
+            // Require a JSON array of registration records.
+            if (array_values($records) !== $records) {
+                throw new RuntimeException("JSON must contain an array.");
+            }
+        }
+
+        // Find the next ID to avoid relying on the record count.
+        $nextId = 1;
+
+        foreach ($records as $record) {
+            if (isset($record["id"]) && is_numeric($record["id"])) {
+                $nextId = max($nextId, (int) $record["id"] + 1);
+            }
+        }
+
+        $records[] = array(
+            "id" => $nextId,
+            "name" => $name,
+            "enrollment" => $enrollment,
+            "email" => $email,
+            "mobile" => $mobile,
+            "course" => $course,
+            "year" => $yearNumber,
+            "gender" => $gender,
+            "termsAccepted" => true
+        );
+
+        $json = json_encode(
+            $records,
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+        );
+
+        if ($json === false) {
+            throw new RuntimeException("Could not encode JSON.");
+        }
+
+        rewind($file);
+
+        if (!ftruncate($file, 0)) {
+            throw new RuntimeException("Could not clear JSON file.");
+        }
+
+        $written = fwrite($file, $json);
+
+        if ($written !== strlen($json) || !fflush($file)) {
+            throw new RuntimeException("Could not write JSON file.");
+        }
+    } finally {
+        if ($locked) {
+            flock($file, LOCK_UN);
+        }
+
+        fclose($file);
+    }
+
     $stmt->close();
     $conn->close();
 
@@ -144,7 +265,11 @@ try {
 } catch (mysqli_sql_exception $e) {
     error_log("Registration database error: " . $e->getMessage());
 
-    if (isset($conn)) {
+    if ($stmt instanceof mysqli_stmt) {
+        $stmt->close();
+    }
+
+    if (isset($conn) && $conn instanceof mysqli) {
         $conn->close();
     }
 
@@ -157,4 +282,20 @@ try {
     sendJson(500, array(
         "error" => "Registration could not be completed. Please try again."
     ));
+
+} catch (Throwable $e) {
+    error_log("Registration error: " . $e->getMessage());
+
+    if ($stmt instanceof mysqli_stmt) {
+        $stmt->close();
+    }
+
+    if (isset($conn) && $conn instanceof mysqli) {
+        $conn->close();
+    }
+
+    sendJson(500, array(
+        "error" => "Registration could not be completed. Please contact the administrator."
+    ));
 }
+    
